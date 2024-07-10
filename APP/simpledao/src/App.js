@@ -1,7 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
+import * as MicroStacks from "@micro-stacks/react"
+
+
 
 function App() {
+  return (
+    <MicroStacks.ClientProvider 
+    appName="GYMDAO" 
+    appIconUrl="APP_ICON.png"
+    network="testnet">
+      <Router />
+    </MicroStacks.ClientProvider>
+  )
   return (
     <div className="App">
       <header className="App-header">
