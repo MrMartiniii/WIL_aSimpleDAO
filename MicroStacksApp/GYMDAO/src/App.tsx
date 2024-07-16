@@ -38,6 +38,7 @@ export default function App() {
     <MicroStacks.ClientProvider
       appName={'React + micro-stacks'}
       appIconUrl={reactLogo}
+      network="testnet"
     >
       <Contents />
     </MicroStacks.ClientProvider>
