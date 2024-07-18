@@ -6,30 +6,49 @@ import * as MicroStacks from '@micro-stacks/react';
 import { WalletConnectButton } from './components/wallet-connect-button';
 import { UserCard } from './components/user-card';
 import { Logo } from './components/ustx-logo';
+import { FC, useState } from 'react';
+
+
 
 
 function Contents() {
   return (
     <>
-    <div>
-      <header className='header'>
-      <UserCard />
-      <WalletConnectButton />
-      </header>
-    </div>
     <div className="container">
         <img src="placeholder.png" alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
+        <header className='header'>
+      <UserCard />
+      <WalletConnectButton />
+      </header>
         <p className="description">Join our Decentralized Autonomous Organization and participate in the future of decentralized governance. Connect your wallet to get started.</p> 
           <div className='Vote'>
             <h2>Place a Vote</h2>
             
             <button>Yes</button>
             <button>No</button>
-          </div>       
+          </div>
     </div>
    
     </>
+  );
+}
+export function Dashboard(): ReturnType<FC> {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
+
+  return (
+    <>
+      <h1>Dashboard</h1>
+      <div className="card">
+      <span>Toggle Card</span>
+      <button type="button" className="btn" onClick={toggleModal}>Open</button>
+      </div>
+    </>
+    
   );
 }
 
@@ -44,4 +63,6 @@ export default function App() {
     </MicroStacks.ClientProvider>
   );
 }
+
+
 
