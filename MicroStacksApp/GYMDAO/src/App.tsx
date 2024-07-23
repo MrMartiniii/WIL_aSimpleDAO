@@ -7,8 +7,8 @@ import { WalletConnectButton } from './components/wallet-connect-button';
 import { UserCard } from './components/user-card';
 import { Logo } from './components/ustx-logo';
 import { FC, useState } from 'react';
-
-
+import LoginModal from './components/LoginModal';
+import Modal from './components/Modal';
 
 
 function Contents() {
@@ -45,8 +45,11 @@ export function Dashboard(): ReturnType<FC> {
       <h1>Dashboard</h1>
       <div className="card">
       <span>Toggle Card</span>
-      <button type="button" className="btn" onClick={toggleModal}>Open</button>
+      <button type="button" className="btn" onClick={toggleModal}>Open Modal
+      </button>
       </div>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+      </Modal>
     </>
     
   );
