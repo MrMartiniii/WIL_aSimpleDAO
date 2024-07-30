@@ -20,5 +20,9 @@ Once the member has input these, the principal can deployed using the *Done* but
 
 To create a principal to be voted on, GymDao members are required to spend 1 GymDao Token.
 
+## Change Log
 
+
+23/7/24 Began work on modal 
+30/7/24 Fixed modal functionality 
 

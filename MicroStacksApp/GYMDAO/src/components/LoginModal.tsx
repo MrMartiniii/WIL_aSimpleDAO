@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount } from '@micro-stacks/react';
 import  Modal  from './Modal'; // Assuming you have a Modal component
-
+import { WalletConnectButton } from './wallet-connect-button';
 const LoginModal: React.FC = () => {
   const { stxAddress } = useAccount(); // Get stxAddress from useAccount hook
   const [isOpen, setIsOpen] = useState<boolean>(false); // Modal starts open
@@ -26,7 +26,7 @@ const LoginModal: React.FC = () => {
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <h2>Login to Xverse</h2>
       <p>Please login using Xverse to continue.</p>
-      <button onClick={handleLogin}>Login with Xverse</button>
+      <WalletConnectButton />
     </Modal>
   );
 };

@@ -9,6 +9,7 @@ import { Logo } from './components/ustx-logo';
 import { FC, useState } from 'react';
 import LoginModal from './components/LoginModal';
 import Modal from './components/Modal';
+import './components/Modal.css'
 
 
 function Contents() {
@@ -62,6 +63,7 @@ export default function App() {
       appIconUrl={reactLogo}
       network="testnet"
     >
+      <LoginModal />
       <Contents />
     </MicroStacks.ClientProvider>
   );
