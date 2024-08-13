@@ -18,4 +18,6 @@ describe("example tests", () => {
   //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
   //   expect(result).toBeUint(0);
   // });
+
+  it("")
 });
