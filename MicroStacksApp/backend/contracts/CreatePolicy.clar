@@ -1,4 +1,3 @@
-
 ;;title: CreatePolicy
 ;; version:
 ;; summary:
@@ -46,7 +45,7 @@
 )
 
 
-(define-public (create-policy (message (string-utf8 500)))
+(define-public (create-policy (message (string-utf8 500)) (amount uint))
   (begin
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
@@ -59,6 +58,7 @@
 (define-public (vote (recipient principal) (decision bool))
     (begin
         (asserts! (is-some (index-of (var-get members) contract-caller)) err-not-a-member)
+        ;; #[allow(unchecked_data)]
         (ok (map-set votes {member: tx-sender, recipient: recipient} {decision: decision}))
     )
 )
@@ -103,4 +103,3 @@
 (define-private (tally (member principal) (accumulator uint)) 
     (if (get-vote member tx-sender) (+ accumulator u1) accumulator)
 )
-

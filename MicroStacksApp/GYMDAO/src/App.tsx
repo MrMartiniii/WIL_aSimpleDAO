@@ -6,13 +6,69 @@ import * as MicroStacks from '@micro-stacks/react';
 import { WalletConnectButton } from './components/wallet-connect-button';
 import { UserCard } from './components/user-card';
 import { Logo } from './components/ustx-logo';
-import { FC, useState } from 'react';
+import { FC, SetStateAction, useCallback, useState } from 'react';
 import LoginModal from './components/LoginModal';
 import Modal from './components/Modal';
 import './components/Modal.css'
 
+import { FungibleConditionCode, makeStandardSTXPostCondition, callReadOnlyFunction } from 'micro-stacks/transactions';
+import { useOpenContractCall } from '@micro-stacks/react';
+import { useAuth } from '@micro-stacks/react';
+import { StacksMocknet } from "micro-stacks/network";
+import { standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+
 
 function Contents() {
+
+  const { openContractCall, isRequestPending } = useOpenContractCall();
+  const { stxAddress } = MicroStacks.useAccount();
+  const [response, setResponse] = useState(null);
+  const { openAuthRequest, signOut, isSignedIn } = useAuth();
+  const [post, setPost] = useState('');
+  const [postedMessage, setPostedMessage] = useState("none");
+  const [contractAddress, setContractAddress] = useState("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM")
+
+  const handleMessageChange = (e: { target: {value: SetStateAction<string>; }; }) => {
+    setPost(e.target.value);
+  }
+
+  const handleOpenContractCall = async () => {
+    const functionArgs = [
+      stringUtf8CV(post),
+    ];
+
+    const postConditions = [
+      makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
+    ];
+
+    await openContractCall({
+      contractAddress: contractAddress,
+      contractName: 'CreatePolicy',
+      functionName: 'create-policy',
+      functionArgs,
+      postConditions,
+      attachment: 'this is an attachment',
+      onFinish: async data => {
+        console.log('finished contract call', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed')
+      },
+    });
+  };
+
+  const getPost = useCallback(async () => {
+    if  (isSignedIn) {
+      const functionArgs = [
+        standardPrincipalCV(`${stxAddress}`)
+      ]
+
+      const network = new StacksMocknet();
+      const result = await callReadOnlyFunction
+    }
+  })
+
   return (
     <>
     <div className="container">
@@ -25,9 +81,18 @@ function Contents() {
         <p className="description">Join our Decentralized Autonomous Organization and participate in the future of decentralized governance. Connect your wallet to get started.</p> 
           <div className='Vote'>
             <h2>Place a Vote</h2>
-            
+
             <button>Yes</button>
             <button>No</button>
+          </div>
+          <div className='proposalCreate'>
+            <h2>Create a Proposal</h2>
+            <form
+
+
+            
+            
+            />
           </div>
     </div>
    
@@ -57,11 +122,13 @@ export function Dashboard(): ReturnType<FC> {
 }
 
 export default function App() {
+  const network = new StacksMocknet();
+
   return (
     <MicroStacks.ClientProvider
       appName={'React + micro-stacks'}
       appIconUrl={reactLogo}
-      network="testnet"
+      network={network}
     >
       <LoginModal />
       <Contents />
