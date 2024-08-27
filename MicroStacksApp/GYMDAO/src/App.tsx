@@ -15,8 +15,16 @@ import './components/Modal.css'
 function Contents() {
   return (
     <>
+    <nav className="navbar">
+    <ul className="navbar-list">
+      <li className="navbar-item"><a href="#home">Home</a></li>
+      <li className="navbar-item"><a href="#proposals">Proposals</a></li>
+      <li className="navbar-item"><a href="#governance">Governance</a></li>
+      <li className="navbar-item"><a href="#about-us">About Us</a></li>
+    </ul>
+  </nav>
     <div className="container">
-        <img src="placeholder.png" alt="Site Logo" className="logo"></img>
+        <img src="WeGyGymDO.png" alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
@@ -28,8 +36,48 @@ function Contents() {
             
             <button>Yes</button>
             <button>No</button>
-          </div>
+          </div> 
     </div>
+    <div className="OngoingProposals">
+      <h2>Ongoing Proposals</h2>
+      <table className="proposals-table">
+      <thead>
+        <tr>
+          <th>Proposal ID</th>
+          <th>Proposal Title</th>
+          <th>Votes</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Proposal A</td>
+          <td>200</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Proposal B</td>
+          <td>150</td>
+          <td>Completed</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Proposal C</td>
+          <td>300</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Proposal D</td>
+          <td>50</td>
+          <td>Rejected</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    
    
     </>
   );
