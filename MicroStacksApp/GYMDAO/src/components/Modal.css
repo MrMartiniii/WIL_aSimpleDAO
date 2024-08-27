@@ -9,17 +9,23 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(15px);
   }
   
   .modal {
-    background-color: #fff;
+    background-color: #1d1d1d;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 400px;
   }
+
+  #connectButton{
+    color: orange;
+    background-color: #2b2b2b;
+  }
   
   .modal-content {
-    color:red
+    color:orange
     /* Add styles for the modal content here */
   }

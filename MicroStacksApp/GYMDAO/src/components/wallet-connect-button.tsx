@@ -1,10 +1,11 @@
 import { useAuth } from '@micro-stacks/react';
 
+
 export const WalletConnectButton = () => {
   const { openAuthRequest, isRequestPending, signOut, isSignedIn } = useAuth();
   const label = isRequestPending ? 'Loading...' : isSignedIn ? 'Sign out' : 'Connect Stacks wallet';
   return (
-    <button
+    <button id='connectButton'
       onClick={() => {
         if (isSignedIn) void signOut();
         else void openAuthRequest();
