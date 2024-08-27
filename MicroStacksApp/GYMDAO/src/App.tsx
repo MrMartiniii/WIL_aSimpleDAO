@@ -1,4 +1,5 @@
 import reactLogo from './assets/react.svg';
+import WeGymLogo from './assets/WeGyGymDO.png';
 import './App.css';
 import dropDown from './components/dropdown-list';
 
@@ -100,7 +101,7 @@ function Contents() {
     </ul>
   </nav>
     <div className="container">
-        <img src="WeGyGymDO.png" alt="Site Logo" className="logo"></img>
+        <img src={WeGymLogo} alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
