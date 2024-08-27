@@ -1,0 +1,33 @@
+[node]
+# The address the node binds to for incoming p2p connections.
+rpc_bind = "0.0.0.0:20443"
+# The address the node binds to for incoming RPC connections.
+p2p_bind = "0.0.0.0:20444"
+# Whether or not this node will attempt to mine blocks
+# Set to false if you do not want this node to mine blocks
+mine_microblocks = false
+
+[burnchain]
+# The type of burnchain; can be either "bitcoin" or "testnet"
+chain = "bitcoin"
+# The URL of a Bitcoin node's RPC interface
+peer_host = "127.0.0.1"
+rpc_port = 18443
+rpc_user = "username"
+rpc_pass = "password"
+
+[devnet]
+# Start the node with the genesis block in memory
+start_at_genesis = true
+
+[[mstx_balance]]
+address = "ST1N1H3KZC3T1WT7BV7J6ZQ8N9KFPVR6D0SFJMC1J"
+amount = 100000000000000
+
+[[mstx_balance]]
+address = "ST2FXXFP8ZDJ3XFTWS4QAEV8K3KE7TZ4EBHGY1RH6"
+amount = 100000000000000
+
+[[mstx_balance]]
+address = "ST3DKG5TEGP5MKXWNWNYY7HBQ6QXDPDTVG6X0J1TB"
+amount = 100000000000000

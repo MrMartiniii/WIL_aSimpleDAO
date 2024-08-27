@@ -16,18 +16,18 @@
 (define-constant err-more-votes-than-members-required (err u102))
 (define-constant err-not-a-member (err u103))
 (define-constant err-votes-required-not-met (err u104))
+(define-constant err-insufficient-balance (err u106))
 
 ;; data vars
 ;;
 (define-data-var total-policies uint u0)
-
 (define-data-var votes-required uint u1)
 (define-data-var members (list 100 principal) (list))
 
 
 ;; data maps
 ;;
-(define-map policies principal (string-utf8 500))
+(define-map policies principal {message: (string-utf8 500), amount: uint})
 (define-map votes {member: principal, recipient: principal} {decision: bool})
 
 ;; public functions
@@ -49,7 +49,7 @@
   (begin
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
-    (map-set policies tx-sender message)
+    (map-set policies tx-sender {message: message, amount: amount})
     (var-set total-policies (+ (var-get total-policies) u1))
     (ok "SUCCESS")
   )
@@ -69,10 +69,15 @@
         (
             (recipient tx-sender)
             (total-votes (tally-votes))
+            (policy (map-get? policies recipient))
+            (amount (unwrap! (get amount policy) (err u105))) ;;get the amount of tokens from the policy
         )
-        (asserts! (>= total-votes (var-get votes-required)) err-votes-required-not-met)
-        (try! (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender recipient)))
-        (ok total-votes)
+        (begin ;; using begin to order the code
+            (asserts! (>= total-votes (var-get votes-required)) err-votes-required-not-met)
+            (asserts! (>= (stx-get-balance (as-contract tx-sender)) amount) (err u106)) ;; use this to check there is enough funds in the pool 
+            (try! (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender recipient))) ;; transfer the specific amount 
+            (ok total-votes)
+        )
     )
 )
 
