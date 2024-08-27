@@ -1,4 +1,5 @@
 import reactLogo from './assets/react.svg';
+import WeGymLogo from './assets/WeGyGymDO.png';
 import './App.css';
 import dropDown from './components/dropdown-list';
 
@@ -6,7 +7,7 @@ import * as MicroStacks from '@micro-stacks/react';
 import { WalletConnectButton } from './components/wallet-connect-button';
 import { UserCard } from './components/user-card';
 import { Logo } from './components/ustx-logo';
-import { FC, SetStateAction, useCallback, useState } from 'react';
+import { FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import LoginModal from './components/LoginModal';
 import Modal from './components/Modal';
 import './components/Modal.css'
@@ -16,6 +17,7 @@ import { useOpenContractCall } from '@micro-stacks/react';
 import { useAuth } from '@micro-stacks/react';
 import { StacksMocknet } from "micro-stacks/network";
 import { standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+import {useInterval} from 'react-use';
 
 
 function Contents() {
@@ -59,20 +61,47 @@ function Contents() {
   };
 
   const getPost = useCallback(async () => {
+
     if  (isSignedIn) {
       const functionArgs = [
         standardPrincipalCV(`${stxAddress}`)
       ]
 
       const network = new StacksMocknet();
-      const result = await callReadOnlyFunction
+      const result = await callReadOnlyFunction({
+        contractAddress: contractAddress,
+        contractName: 'CreatePolicy',
+        functionName: 'create-policy',
+        functionArgs,
+        network
+      });
+      console.log("getting result", result);
+      if (result.value) {
+        setPostedMessage(result.value.data)
+      }
     }
-  })
+  }, []);
+
+  useEffect( () => {
+    console.log('In UseEffect')
+    getPost()
+  }, [isSignedIn])
+
+  useInterval(getPost, 10000);
+  
 
   return (
     <>
+    <nav className="navbar">
+    <ul className="navbar-list">
+      <li className="navbar-item"><a href="#home">Home</a></li>
+      <li className="navbar-item"><a href="#proposals">Proposals</a></li>
+      <li className="navbar-item"><a href="#governance">Governance</a></li>
+      <li className="navbar-item"><a href="#about-us">About Us</a></li>
+    </ul>
+  </nav>
     <div className="container">
-        <img src="placeholder.png" alt="Site Logo" className="logo"></img>
+        <img src={WeGymLogo} alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
@@ -84,21 +113,52 @@ function Contents() {
 
             <button>Yes</button>
             <button>No</button>
-          </div>
-          <div className='proposalCreate'>
-            <h2>Create a Proposal</h2>
-            <form
-
-
-            
-            
-            />
-          </div>
+          </div> 
     </div>
+    <div className="OngoingProposals">
+      <h2>Ongoing Proposals</h2>
+      <table className="proposals-table">
+      <thead>
+        <tr>
+          <th>Proposal ID</th>
+          <th>Proposal Title</th>
+          <th>Votes</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Proposal A</td>
+          <td>200</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Proposal B</td>
+          <td>150</td>
+          <td>Completed</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Proposal C</td>
+          <td>300</td>
+          <td>Active</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Proposal D</td>
+          <td>50</td>
+          <td>Rejected</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    
    
     </>
   );
-}
+};
 export function Dashboard(): ReturnType<FC> {
   const [showModal, setShowModal] = useState<boolean>(false);
 
