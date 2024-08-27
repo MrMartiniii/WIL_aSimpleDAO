@@ -6,7 +6,7 @@ import * as MicroStacks from '@micro-stacks/react';
 import { WalletConnectButton } from './components/wallet-connect-button';
 import { UserCard } from './components/user-card';
 import { Logo } from './components/ustx-logo';
-import { FC, SetStateAction, useCallback, useState } from 'react';
+import { FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import LoginModal from './components/LoginModal';
 import Modal from './components/Modal';
 import './components/Modal.css'
@@ -16,6 +16,7 @@ import { useOpenContractCall } from '@micro-stacks/react';
 import { useAuth } from '@micro-stacks/react';
 import { StacksMocknet } from "micro-stacks/network";
 import { standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+import {useInterval} from 'react-use';
 
 
 function Contents() {
@@ -59,15 +60,34 @@ function Contents() {
   };
 
   const getPost = useCallback(async () => {
+
     if  (isSignedIn) {
       const functionArgs = [
         standardPrincipalCV(`${stxAddress}`)
       ]
 
       const network = new StacksMocknet();
-      const result = await callReadOnlyFunction
+      const result = await callReadOnlyFunction({
+        contractAddress: contractAddress,
+        contractName: 'CreatePolicy',
+        functionName: 'create-policy',
+        functionArgs,
+        network
+      });
+      console.log("getting result", result);
+      if (result.value) {
+        setPostedMessage(result.value.data)
+      }
     }
-  })
+  }, []);
+
+  useEffect( () => {
+    console.log('In UseEffect')
+    getPost()
+  }, [isSignedIn])
+
+  useInterval(getPost, 10000);
+  
 
   return (
     <>
@@ -98,7 +118,7 @@ function Contents() {
    
     </>
   );
-}
+};
 export function Dashboard(): ReturnType<FC> {
   const [showModal, setShowModal] = useState<boolean>(false);
 
