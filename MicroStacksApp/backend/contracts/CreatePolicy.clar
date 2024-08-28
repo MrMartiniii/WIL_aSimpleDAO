@@ -7,7 +7,7 @@
 ;;
 (define-constant contract-owner tx-sender)
 
-(define-constant price u1)
+(define-constant price u1000)
 
 ;; errors
 ;;
@@ -50,6 +50,7 @@
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
     (map-set policies tx-sender {message: message, amount: amount})
+    (print (map-get? policies tx-sender))
     (var-set total-policies (+ (var-get total-policies) u1))
     (ok "SUCCESS")
   )

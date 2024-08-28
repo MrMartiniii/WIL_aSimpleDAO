@@ -126,8 +126,118 @@ h1.title {
 
 .description {
   font-size: 1.1em;
-  color: #bbb; /* Light grey text color */
+  color: #ffffff; /* Light grey text color */
   margin-bottom: 20px;
+  font-weight: 500;
+}
+
+summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+summary::after {
+  content: '';
+  width: 18px;
+  height: 10px;
+  background: url('https://uploads.sitepoint.com/wp-content/uploads/2023/10/1697699669arrow.svg') no-repeat;
+  background-size: cover;
+  color: white;
+  transition: 0.2s;
+}
+
+details[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary {
+  color: #b9aeae;
+  border-radius: 5px;
+  text-align: center;
+}
+
+details[open] summary {border-radius: 5px 5px 0 0;}
+
+details {
+  background-color: #fdc650;
+  background-image: linear-gradient(45deg, #1014f1 0%, #bd7619 100%);
+  border-radius: 5px;
+  text-align: left;
+  padding-bottom: 1px;
+}
+
+/* extra styles */
+
+* {box-sizing: border-box;}
+body {font-family: system-ui, sans-serif; margin: 20px; background: #363636;}
+h1 {font-size: 1.2em;}
+article > *:first-child {margin: 0;}
+article > * + * {margin: 0.75em 0 0 0;}
+pre {color: white; background: #443c35; padding: 1em; border-radius: 5px;}
+article {padding: 10px; margin: 0;}
+details code {font-size: 1.1em;}
+
+input[type=text], select {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  text-align: left;
+  display: block  ;
+  margin-right: auto;
+  margin-left: 10%;
+  color: #cacaca;
+}
+
+input[type=number] {
+  width: 30%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  text-align: left;
+  margin-right: auto;
+  margin-left: 10%;
+  color: #cacaca; 
+}
+
+input[type=submit] {
+  width: 20%;
+  background-color: #d6b910;
+  color: rgb(0, 0, 0);
+  padding: 14px 20px;
+  margin: 4px 0;
+  border: 0px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight:  bold;
+  text-align: center;
+  margin-right: 20;
+  margin-left: 30%;
+  display: inline-block;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+input[type=submit]:hover {
+  background-color: #1b7ad4;
+  color: #ffffff;
 }
 
 .Vote {

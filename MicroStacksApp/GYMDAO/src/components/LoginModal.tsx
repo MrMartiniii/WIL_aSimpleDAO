@@ -24,8 +24,8 @@ const LoginModal: React.FC = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <h2>Login to Xverse</h2>
-      <p>Please login using Xverse to continue.</p>
+      <h2>Connect your STX wallet</h2>
+      <p>Please login using your stacks wallet to continue.</p>
       <WalletConnectButton />
     </Modal>
   );

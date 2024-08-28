@@ -16,11 +16,13 @@ import { FungibleConditionCode, makeStandardSTXPostCondition, callReadOnlyFuncti
 import { useOpenContractCall } from '@micro-stacks/react';
 import { useAuth } from '@micro-stacks/react';
 import { StacksMocknet } from "micro-stacks/network";
-import { standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+import { intCV, standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
 import {useInterval} from 'react-use';
 
 
 function Contents() {
+
+  
 
   const { openContractCall, isRequestPending } = useOpenContractCall();
   const { stxAddress } = MicroStacks.useAccount();
@@ -28,15 +30,21 @@ function Contents() {
   const { openAuthRequest, signOut, isSignedIn } = useAuth();
   const [post, setPost] = useState('');
   const [postedMessage, setPostedMessage] = useState("none");
+  const [postVal, setPostVal] = useState('');
+  const [postedValue, setPostedValue] =useState("none");
   const [contractAddress, setContractAddress] = useState("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM")
 
   const handleMessageChange = (e: { target: {value: SetStateAction<string>; }; }) => {
     setPost(e.target.value);
   }
+  const handleValueChange = (e: {target: {value: SetStateAction<string>; }; }) => {
+    setPostVal(e.target.value);
+  }
 
   const handleOpenContractCall = async () => {
     const functionArgs = [
       stringUtf8CV(post),
+      intCV(postVal),
     ];
 
     const postConditions = [
@@ -77,7 +85,8 @@ function Contents() {
       });
       console.log("getting result", result);
       if (result.value) {
-        setPostedMessage(result.value.data)
+        console.log(result.value.data)
+        //setPostedMessage(result.value.data)
       }
     }
   }, []);
@@ -88,7 +97,7 @@ function Contents() {
   }, [isSignedIn])
 
   useInterval(getPost, 10000);
-  
+
 
   return (
     <>
@@ -107,14 +116,24 @@ function Contents() {
       <UserCard />
       <WalletConnectButton />
       </header>
-        <p className="description">Join our Decentralized Autonomous Organization and participate in the future of decentralized governance. Connect your wallet to get started.</p> 
-          <div className='Vote'>
-            <h2>Place a Vote</h2>
+        <p className="description">Create or vote on a policy</p> 
+        <details className='collapsible'>
+          <summary>Create a Policy</summary>
+          <p>
+            <form action="" id='policyInput' onSubmit={() => handleOpenContractCall()}>
+              <input type="text" placeholder='Description' value={post} onChange={handleMessageChange}/>
+              <input type="number" placeholder='Amount' value={postVal} onChange={handleValueChange}/>
+              <input type="submit" />
+            </form>
+          </p>
+        </details>
+        <div className='Vote'>
+          <h2>Place a Vote</h2>
 
-            <button>Yes</button>
-            <button>No</button>
-          </div> 
-    </div>
+          <button>Yes</button>
+          <button>No</button>
+        </div> 
+      </div>
     <div className="OngoingProposals">
       <h2>Ongoing Proposals</h2>
       <table className="proposals-table">
