@@ -2,6 +2,12 @@ import reactLogo from './assets/react.svg';
 import WeGymLogo from './assets/WeGyGymDO.png';
 import './App.css';
 import dropDown from './components/dropdown-list';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import Proposals from './components/proposals';
+import Governance from './components/governance';
+import AboutUs from './components/aboutUs';
 
 import * as MicroStacks from '@micro-stacks/react';
 import { WalletConnectButton } from './components/wallet-connect-button';
@@ -101,14 +107,6 @@ function Contents() {
 
   return (
     <>
-    <nav className="navbar">
-    <ul className="navbar-list">
-      <li className="navbar-item"><a href="#home">Home</a></li>
-      <li className="navbar-item"><a href="#proposals">Proposals</a></li>
-      <li className="navbar-item"><a href="#governance">Governance</a></li>
-      <li className="navbar-item"><a href="#about-us">About Us</a></li>
-    </ul>
-  </nav>
     <div className="container">
         <img src={WeGymLogo} alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
@@ -209,8 +207,16 @@ export default function App() {
       appIconUrl={reactLogo}
       network={network}
     >
-      <LoginModal />
-      <Contents />
+      <BrowserRouter>
+        <LoginModal />
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Contents />} />
+          <Route path="/proposals" element={<Proposals />} />
+          <Route path="/governance" element={<Governance />} />
+          <Route path="/about-us" element={<AboutUs />} />
+        </Routes>
+      </BrowserRouter>
     </MicroStacks.ClientProvider>
   );
 }
