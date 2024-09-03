@@ -1,46 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@micro-stacks/react';
-import { callReadOnlyFunction } from 'micro-stacks/transactions';
-import { StacksMocknet } from 'micro-stacks/network';
-
-interface GovernanceData {
-  totalVotes: number;
-  totalProposals: number;
-  totalMembers: number;
-}
+import React from 'react';
+import stacksLogo from '../assets/stacks-logo.png';
 
 const Governance = () => {
-  const [governanceData, setGovernanceData] = useState<GovernanceData | null>(null);
-  const { stxAddress } = useAuth();
-
-  useEffect(() => {
-    const fetchGovernanceData = async () => {
-      const network = new StacksMocknet();
-      const result = await callReadOnlyFunction({
-        contractAddress: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
-        contractName: 'CreatePolicy',
-        functionName: 'get-governance-data',
-        functionArgs: [],
-        network,
-      });
-      const governanceData = result.value.data;
-      setGovernanceData(governanceData);
-    };
-    fetchGovernanceData();
-  }, [stxAddress]);
-
   return (
     <div>
-      <h1>Governance</h1>
-      {governanceData ? (
-        <div>
-          <p>Total Votes: {governanceData.totalVotes}</p>
-          <p>Total Proposals: {governanceData.totalProposals}</p>
-          <p>Total Members: {governanceData.totalMembers}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <div className="container">
+      <img src={stacksLogo} alt="Stacks Logo" className='stacksLogo'/>
+        <h1>Governance</h1>
+        <h2>Introduction to Stacks</h2>
+        <p>
+          Stacks is a decentralized blockchain network that enables the creation of decentralized applications (dApps) and smart contracts on the Bitcoin blockchain.
+        </p>
+      </div>
+
+      <div className="container">
+        <h2>Governance Forum</h2>
+        <p>
+          The Stacks Governance Forum is a platform for the community to discuss and propose changes to the Stacks network. Recent topics of discussion include:
+        </p>
+        <ul>
+          <li><a href="https://forum.stacks.org/c/Working-Groups/governance/">Governance Working Group</a></li>
+          <li><a href="https://github.com/stacksgov/pm/labels/mtg-agenda">Meeting Agendas</a></li>
+          <li><a href="https://discordapp.com/invite/ny6wGkx">Stacks Discord</a></li>
+        </ul>
+      </div>
+
+      <div className="container">
+        <h2>Governance Process of the DAO</h2>
+        <p>
+          The Stacks Governance Process is a community-driven initiative that enables the community to propose, discuss, and vote on changes to the Stacks network. The process involves:
+        </p>
+        <ol>
+          <li>Proposal submission: Community members can submit proposals for changes to the Stacks network.</li>
+          <li>Discussion: The community discusses the proposal on the Governance Forum.</li>
+          <li>Voting: The community votes on the proposal using a decentralized voting system.</li>
+          <li>Implementation: If the proposal is approved, it is implemented by the Stacks development team.</li>
+        </ol>
+      </div>
     </div>
   );
 };

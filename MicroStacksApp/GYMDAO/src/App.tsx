@@ -1,5 +1,4 @@
 import reactLogo from './assets/react.svg';
-import WeGymLogo from './assets/WeGyGymDO.png';
 import './App.css';
 import dropDown from './components/dropdown-list';
 import React from 'react';
@@ -108,7 +107,6 @@ function Contents() {
   return (
     <>
     <div className="container">
-        <img src={WeGymLogo} alt="Site Logo" className="logo"></img>
         <h1 className="title">Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
@@ -132,7 +130,9 @@ function Contents() {
           <button>No</button>
         </div> 
       </div>
-    <div className="OngoingProposals">
+
+
+    <div className="container">
       <h2>Ongoing Proposals</h2>
       <table className="proposals-table">
       <thead>
