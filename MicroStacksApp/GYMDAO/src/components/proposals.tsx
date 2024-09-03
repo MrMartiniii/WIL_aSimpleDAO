@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@micro-stacks/react';
 import { callReadOnlyFunction } from 'micro-stacks/transactions';
 import { StacksMocknet } from 'micro-stacks/network';
+import '../App.css';
 
 interface Proposal {
   id: number;
@@ -38,7 +39,7 @@ const Proposals = () => {
   }, [stxAddress]);
 
   return (
-    <div>
+    <div className='container'>
       <h1>Proposals</h1>
       <table>
         <thead>
