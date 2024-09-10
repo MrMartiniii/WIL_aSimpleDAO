@@ -3,8 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  --primary-color: #03a9f4;
-  --secondary-color: #ff6214 ;
+  --primary-color: #00d9ff;
+  --secondary-color: #c94d0f ;
   --background-color: #212121 ;
   --text-color: #ffffff ;
   --accent-color: #ffff00 ;
@@ -89,11 +89,14 @@ footer {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Trebuchet MS', sans-serif;
   background-color: var(--background-color);
   margin: 0;
-  padding: 20px;
-  color: var(--text-color);
+  padding: 100px 20px 20px;
+  background-image: './assets/background.png'; /* Replace 'image.jpg' with your image file name */
+  background-size: cover; /* Scale the image to cover the entire background */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-attachment: fixed; /* Fix the image to the viewport */
 }
 
 .container {
@@ -105,12 +108,48 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  animation: fadeIn 0.5s; /* Add animation */
+  animation-fill-mode: backwards;
+  --delay: 0s;
+  position: relative;
+}
+
+.container:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.container:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.container:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.container:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+.container:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.container:nth-child(6) {
+  animation-delay: 1.25s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .nav-bar {
-  background-color: var(--secondary-color); /* Darker grey background for the navbar */
-  padding: 10px;
-  padding-left: 20px; /* Add some padding to the left side */
+  background-color: rgb(0, 0, 19); /* Darker grey background for the navbar */
+  padding: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,15 +157,17 @@ body {
   top: 0; /* Position at the top of the page */
   left: 0; /* Position at the left edge of the page */
   width: 100%; /* Span the full width of the page */
-  border: 3px solid #000;
+  height: 100px;
+  border: 1px solid grey;
   opacity: 0.9;
+  z-index: 1;
 }
 
 .nav-bar .logo {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: auto;
   margin-left: 10px;
-  margin-right: 20px;
+  margin-right: auto;
 }
 
 .nav-bar ul {
@@ -134,18 +175,21 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center the items horizontally */
+  text-align: center; /* Center the items horizontally */
 }
 
 .nav-bar li {
-  margin-right: 20px;
-}
+  display: inline-block; /* Display list items as inline blocks */
+  margin: 20px; /* Keep the margin for spacing */
+  height: 40px;
+  }
 
 .nav-bar a {
   color: var(--primary-color); /* Cyan text color for navbar links */
   text-decoration: none;
   transition: color 0.5s;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 .nav-bar a:hover {
@@ -174,10 +218,13 @@ h1 {
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--secondary-color)
+  margin: 1rem;
+  line-height: normal;
+  color: var(--secondary-color);
+  text-decoration: underline;
+  outline: 10px black;
 }
 
 p {

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import WeGymLogo from './WeGyGymDO.png';
 import '../App.css';
+import { WalletConnectButton } from './wallet-connect-button';
+import { UserCard } from './user-card';
 
 const NavBar = () => {
   return (
@@ -19,6 +21,9 @@ const NavBar = () => {
         </li>
         <li>
           <Link to="/about-us">About Us</Link>
+        </li>
+        <li>
+          <WalletConnectButton />
         </li>
       </ul>
     </nav>

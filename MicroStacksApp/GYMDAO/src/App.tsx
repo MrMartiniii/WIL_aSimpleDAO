@@ -1,4 +1,5 @@
 import reactLogo from './assets/react.svg';
+import './assets/background.png';
 import './App.css';
 import dropDown from './components/dropdown-list';
 import React from 'react';
@@ -110,69 +111,24 @@ function Contents() {
         <h1 className="title">Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
-      <WalletConnectButton />
       </header>
-        <p className="description">Create or vote on a policy</p> 
-        <details className='collapsible'>
-          <summary>Create a Policy</summary>
-          <p>
-            <form action="" id='policyInput' onSubmit={() => handleOpenContractCall()}>
-              <input type="text" placeholder='Description' value={post} onChange={handleMessageChange}/>
-              <input type="number" placeholder='Amount' value={postVal} onChange={handleValueChange}/>
-              <input type="submit" />
-            </form>
-          </p>
-        </details>
-        <div className='Vote'>
-          <h2>Place a Vote</h2>
-
-          <button>Yes</button>
-          <button>No</button>
-        </div> 
-      </div>
-
-
-    <div className="container">
-      <h2>Ongoing Proposals</h2>
-      <table className="proposals-table">
-      <thead>
-        <tr>
-          <th>Proposal ID</th>
-          <th>Proposal Title</th>
-          <th>Votes</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Proposal A</td>
-          <td>200</td>
-          <td>Active</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Proposal B</td>
-          <td>150</td>
-          <td>Completed</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Proposal C</td>
-          <td>300</td>
-          <td>Active</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Proposal D</td>
-          <td>50</td>
-          <td>Rejected</td>
-        </tr>
-      </tbody>
-    </table>
     </div>
-    
-   
+    <div className="container">
+      <p>At WeGym, we're not just a gym — we're a community where you have the power to shape the gym's future. Using cutting-edge blockchain technology, we've created a system that lets members directly manage and make decisions through our unique DAO (Decentralized Autonomous Organization). This means that every vote you cast on gym-related matters, whether it's new equipment, classes, or other improvements, is secure, transparent, and tamper-proof. No one can alter or manipulate the results, ensuring that every voice is heard fairly and openly.</p>
+      <h2>What Is WeGym?</h2>
+    </div>
+    <div className="container">
+      <h2>What Can I do?</h2>
+      <p>What's more, our system operates 24/7, so no matter your schedule, you can always take part. You can even earn tokens by getting involved in decision-making, rewarding you for shaping your gym experience. WEGYM is more than just a place to work out — it's a gym managed by the community, for the community, and we're excited for you to be part of it!</p>
+    </div>
+    <div className="container">
+      <p>Simple! You want new equipment, classes, or gym features? Write a proposal, everyone in the community has an opportunity to vote on it, and if the majority of the community like your idea, it'll pass. If you linked a product, it will be automatically purchased with the WEGYM members fund. Once it rocks up, our team at the gym will set it up and you can begin enjoying YOUR new addition to OUR gym!</p>
+      <h2>How Does it Work tho, Actually?</h2>
+    </div>
+    <div className="container">
+      <h2>Why Bother with Blockchain?</h2>
+      <p>Blockchain, specifically built on top of Bitcoin, is the perfect fit for WEGYM because it provides a secure, transparent, and decentralized way for members to manage the gym. Leveraging Bitcoin's robust and time-tested network, every member's vote is immutably recorded and protected from tampering, ensuring that decisions are fully transparent and verifiable. This fosters trust, as no one can alter the results, and every action is backed by Bitcoin's unmatched security. With 24/7 operation, members can participate in decision-making at their convenience, all without needing intermediaries. This gives the WEGYM community full control and ownership over their gym experience, powered by Bitcoin's blockchain.</p>
+    </div>
     </>
   );
 };
