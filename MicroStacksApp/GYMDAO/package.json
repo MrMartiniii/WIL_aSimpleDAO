@@ -11,9 +11,11 @@
   "dependencies": {
     "@micro-stacks/client": "1.0.0",
     "@micro-stacks/react": "^1.0.9",
+    "common-module": "^0.0.28",
     "micro-stacks": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.26.1",
     "react-use": "^17.5.1"
   },
   "devDependencies": {

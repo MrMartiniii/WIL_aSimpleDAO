@@ -18,6 +18,7 @@
 (define-constant err-votes-required-not-met (err u104))
 (define-constant err-insufficient-balance (err u106))
 
+
 ;; data vars
 ;;
 (define-data-var total-policies uint u0)
@@ -45,11 +46,11 @@
 )
 
 
-(define-public (create-policy (message (string-utf8 500)) (amount uint))
+(define-public (create-policy (message (string-utf8 500)) (amount int))
   (begin
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
-    (map-set policies tx-sender {message: message, amount: amount})
+    (map-set policies tx-sender {message: message, amount: (to-uint amount)})
     (print (map-get? policies tx-sender))
     (var-set total-policies (+ (var-get total-policies) u1))
     (ok "SUCCESS")
@@ -83,7 +84,7 @@
 )
 
 ;;Deposit to contract
-(define-public (deposit (amount uint)) 
+(define-public (deposit (amount uint))
     (stx-transfer? amount tx-sender (as-contract tx-sender))
 )
 
@@ -97,9 +98,25 @@
 (define-read-only (tally-votes) 
     (fold tally (var-get members) u0)
 )
+
 ;;(define-read-only (get-total-policies))
 
-;;(define-read-only (getPolicies))
+(define-read-only (getPolicies)
+        (ok (append (list) (get-all-policies (var-get members))))
+  
+)
+
+(define-read-only (get-all-policies (ids (list 100 principal)))
+    (map get-one-policy ids)
+)
+
+(define-read-only (get-policy) 
+    (get message (map-get? policies (tuple (key-1 val-1))))
+)
+
+
+
+
 
 
 
@@ -108,4 +125,8 @@
 
 (define-private (tally (member principal) (accumulator uint)) 
     (if (get-vote member tx-sender) (+ accumulator u1) accumulator)
+)
+
+(define-private (get-one-policy (principal principal)) 
+    (map-get? policies principal)
 )

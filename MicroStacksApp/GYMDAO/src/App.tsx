@@ -85,14 +85,16 @@ function Contents() {
       const result = await callReadOnlyFunction({
         contractAddress: contractAddress,
         contractName: 'CreatePolicy',
-        functionName: 'create-policy',
+        functionName: 'getPolicies',
         functionArgs,
         network
       });
+
+
       console.log("getting result", result);
       if (result.value) {
-        console.log(result.value.data)
-        //setPostedMessage(result.value.data)
+        //console.log(result.value.data)
+        setPostedMessage(result.value.data)
       }
     }
   }, []);
@@ -113,6 +115,25 @@ function Contents() {
       <UserCard />
       </header>
     </div>
+    <form action="" id="policyInput" onSubmit={ () => handleOpenContractCall()}>
+            <input
+              id='description'
+              type="text"
+              placeholder="Description"
+              //value={newProposal.title}
+              onChange={(handleMessageChange)}
+            />
+            <input
+              id='value'
+              type="text"
+              placeholder="Title"
+              //value={newProposal.description}
+              onChange={((handleValueChange))}
+            />
+            <input type="submit" />
+          </form>
+
+          <p>{postedMessage}</p>
     <div className="container">
       <p>At WeGym, we're not just a gym — we're a community where you have the power to shape the gym's future. Using cutting-edge blockchain technology, we've created a system that lets members directly manage and make decisions through our unique DAO (Decentralized Autonomous Organization). This means that every vote you cast on gym-related matters, whether it's new equipment, classes, or other improvements, is secure, transparent, and tamper-proof. No one can alter or manipulate the results, ensuring that every voice is heard fairly and openly.</p>
       <h2>What Is WeGym?</h2>

@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, SetStateAction, useCallback, useState, useEffect } from 'react';
 import { useAuth } from '@micro-stacks/react';
-import { callReadOnlyFunction } from 'micro-stacks/transactions';
+import { FungibleConditionCode, makeStandardSTXPostCondition, callReadOnlyFunction } from 'micro-stacks/transactions';
 import { StacksMocknet } from 'micro-stacks/network';
 import '../App.css';
+import { useOpenContractCall } from '@micro-stacks/react';
+import { intCV, standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+import {useInterval} from 'react-use';
+
+import * as MicroStacks from '@micro-stacks/react';
 
 interface Proposal {
   id: number;
@@ -13,6 +18,10 @@ interface Proposal {
 }
 
 const Proposals = () => {
+
+  
+
+
   const [proposals, setProposals] = useState<Proposal[]>([
     {
       id: 1,
@@ -44,39 +53,76 @@ const Proposals = () => {
     },
   ]);
 
-  const [newProposal, setNewProposal] = useState({
-    title: '',
-    description: '',
-  });
+  const fakeProposals = []
 
+  const { openContractCall, isRequestPending } = useOpenContractCall();
+  const { stxAddress } = MicroStacks.useAccount();
+  const [response, setResponse] = useState(null);
+  const { openAuthRequest, signOut, isSignedIn } = useAuth();
   const [post, setPost] = useState('');
-  const [postVal, setPostVal] = useState(0);
+  const [postedMessage, setPostedMessage] = useState("none");
+  const [postVal, setPostVal] = useState('');
+  const [postedValue, setPostedValue] =useState("none");
+  const [contractAddress, setContractAddress] = useState("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM")
 
-  const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPost(event.target.value);
+  const handleMessageChange = (e: { target: {value: SetStateAction<string>; }; }) => {
+    setPost(e.target.value);
+  }
+  const handleValueChange = (e: {target: {value: SetStateAction<string>; }; }) => {
+    setPostVal(e.target.value);
+    console.log(e.target.value)
+  }
+
+  const handleOpenContractCall = async () => {
+    const functionArgs = [
+      stringUtf8CV(post),
+      intCV(postVal),
+      console.log("Hello")
+    ];
+
+    const postConditions = [
+      makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
+    ];
+
+    await openContractCall({
+      contractAddress: contractAddress,
+      contractName: 'CreatePolicy',
+      functionName: 'create-policy',
+      functionArgs,
+      postConditions,
+      attachment: 'this is an attachment',
+      onFinish: async data => {
+        console.log('finished contract call', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed')
+      },
+    });
   };
 
-  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPostVal(parseInt(event.target.value, 10));
-  };
+  const getPost = useCallback(async () => {
 
-  const handleOpenContractCall = () => {
-    // TO DO: implement contract call logic
-  };
+    if  (isSignedIn) {
+      const functionArgs = [
+        standardPrincipalCV(`${stxAddress}`)
+      ]
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const newProposalId = proposals.length + 1;
-    const newProposalData: Proposal = {
-      id: newProposalId,
-      title: newProposal.title,
-      description: newProposal.description,
-      votes: 0,
-      status: 'Active',
-    };
-    setProposals([...proposals, newProposalData]);
-    setNewProposal({ title: '', description: '' });
-  };
+      const network = new StacksMocknet();
+      const result = await callReadOnlyFunction({
+        contractAddress: contractAddress,
+        contractName: 'CreatePolicy',
+        functionName: 'create-policy',
+        functionArgs,
+        network
+      });
+      console.log("getting result", result);
+      if (result.value) {
+        console.log(result.value.data)
+        setPostedMessage(result.value.data)
+      }
+    }
+  }, []);
 
   return (
     <div>
@@ -87,23 +133,23 @@ const Proposals = () => {
       <p className="description">Create or vote on a policy</p>
       <details className="collapsible">
         <summary>Create a Policy</summary>
-        <p>
-          <form action="" id="policyInput" onSubmit={handleSubmit}>
+          <form action="" id="policyInput" onSubmit={() => handleOpenContractCall()}>
             <input
+              id='description'
               type="text"
               placeholder="Description"
-              value={newProposal.title}
-              onChange={(event) => setNewProposal({ ...newProposal, title: event.target.value })}
+              //value={newProposal.title}
+              onChange={(handleMessageChange)}
             />
             <input
+              id='value'
               type="text"
               placeholder="Title"
-              value={newProposal.description}
-              onChange={(event) => setNewProposal({ ...newProposal, description: event.target.value })}
+              //value={newProposal.description}
+              onChange={((handleValueChange))}
             />
             <input type="submit" />
           </form>
-        </p>
       </details>
       <div className="Vote">
         <h2>Place a Vote</h2>
@@ -140,3 +186,5 @@ const Proposals = () => {
 };
 
 export default Proposals;
+
+//(event) => setNewProposal({ ...newProposal, title: event.target.value })
