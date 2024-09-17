@@ -88,17 +88,17 @@ footer {
   fill: var(--primary-color);
 }
 
-body {
+html {
   font-family: 'Trebuchet MS', sans-serif;
   background-color: var(--background-color);
   margin: 0;
   padding: 100px 20px 20px;
-  background-image: './assets/background.png'; /* Replace 'image.jpg' with your image file name */
-  background-size: cover; /* Scale the image to cover the entire background */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
-  background-attachment: fixed; /* Fix the image to the viewport */
+  background-image: url('./assets/background.png');
+  background-size: 100vw 100vh; /* Set the background image to cover the full width and height of the page */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed; /* Fix the background image to the viewport */
 }
-
 .container {
   background-color: var(--background-color);
   padding: 2rem;
@@ -202,11 +202,6 @@ body {
   align-items: center;
 }
 
-h1.title {
-  color: var(--primary-color); /* Cyan color for the title */
-  font-size: 2em;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Stronger text shadow for a glowing effect */
-}
 
 h1 {
   color: var(--primary-color);
@@ -299,7 +294,6 @@ details {
 /* extra styles */
 
 * {box-sizing: border-box;}
-body {font-family: system-ui, sans-serif; margin: 20px; background: #363636;}
 h1 {font-size: 1.2em;}
 article > *:first-child {margin: 0;}
 article > * + * {margin: 0.75em 0 0 0;}

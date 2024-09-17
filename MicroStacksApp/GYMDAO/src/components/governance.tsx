@@ -14,15 +14,17 @@ const Governance = () => {
       </div>
 
       <div className="container">
-        <h2>Governance Forum</h2>
-        <p>
+      <p>
           The Stacks Governance Forum is a platform for the community to discuss and propose changes to the Stacks network. Recent topics of discussion include:
         </p>
+      <h2>Governance Forum</h2>
         <ul>
           <li><a href="https://forum.stacks.org/c/Working-Groups/governance/">Governance Working Group</a></li>
           <li><a href="https://github.com/stacksgov/pm/labels/mtg-agenda">Meeting Agendas</a></li>
           <li><a href="https://discordapp.com/invite/ny6wGkx">Stacks Discord</a></li>
         </ul>
+
+
       </div>
 
       <div className="container">

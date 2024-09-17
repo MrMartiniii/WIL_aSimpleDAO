@@ -81,7 +81,7 @@ const Proposals = () => {
   return (
     <div>
     <div className="container">
-      <h1 className="title">Proposals</h1>
+      <h1>Proposals</h1>
       <header className="header">
       </header>
       <p className="description">Create or vote on a policy</p>
@@ -113,7 +113,6 @@ const Proposals = () => {
     </div>
 
     <div className="container">
-      <h2>Ongoing Proposals</h2>
       <table className="proposals-table">
         <thead>
           <tr>
@@ -134,6 +133,7 @@ const Proposals = () => {
           ))}
         </tbody>
       </table>
+      <h2>Ongoing Proposals</h2>
     </div>
     </div>
   );

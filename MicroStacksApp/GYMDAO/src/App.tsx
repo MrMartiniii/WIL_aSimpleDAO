@@ -108,7 +108,7 @@ function Contents() {
   return (
     <>
     <div className="container">
-        <h1 className="title">Welcome to GYM DAO</h1>
+        <h1>Welcome to GYM DAO</h1>
         <header className='header'>
       <UserCard />
       </header>
