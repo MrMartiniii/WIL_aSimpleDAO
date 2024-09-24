@@ -13,42 +13,38 @@ interface Proposal {
   id: number;
   title: string;
   description: string;
-  votes: number;
+  amount: number;
   status: string;
 }
 
 const Proposals = () => {
-
-  
-
-
   const [proposals, setProposals] = useState<Proposal[]>([
     {
       id: 1,
       title: 'Proposal A',
-      description: 'This is proposal A',
-      votes: 200,
+      description: 'Buy a treadmill',
+      amount: 200,
       status: 'Active',
     },
     {
       id: 2,
       title: 'Proposal B',
       description: 'This is proposal B',
-      votes: 150,
+      amount: 150,
       status: 'Completed',
     },
     {
       id: 3,
       title: 'Proposal C',
       description: 'This is proposal C',
-      votes: 300,
+      amount: 300,
       status: 'Active',
     },
     {
       id: 4,
       title: 'Proposal D',
       description: 'This is proposal D',
-      votes: 50,
+      amount: 50,
       status: 'Rejected',
     },
   ]);
@@ -70,14 +66,12 @@ const Proposals = () => {
   }
   const handleValueChange = (e: {target: {value: SetStateAction<string>; }; }) => {
     setPostVal(e.target.value);
-    console.log(e.target.value)
   }
 
   const handleOpenContractCall = async () => {
     const functionArgs = [
       stringUtf8CV(post),
       intCV(postVal),
-      console.log("Hello")
     ];
 
     const postConditions = [
@@ -112,17 +106,27 @@ const Proposals = () => {
       const result = await callReadOnlyFunction({
         contractAddress: contractAddress,
         contractName: 'CreatePolicy',
-        functionName: 'create-policy',
+        functionName: 'getPolicies',
         functionArgs,
         network
       });
+
+
       console.log("getting result", result);
       if (result.value) {
-        console.log(result.value.data)
+        //console.log(result.value.data)
         setPostedMessage(result.value.data)
       }
     }
   }, []);
+
+  useEffect( () => {
+    console.log('In UseEffect')
+    getPost()
+  }, [isSignedIn])
+
+  useInterval(getPost, 10000);
+
 
   return (
     <div>
@@ -144,7 +148,7 @@ const Proposals = () => {
             <input
               id='value'
               type="text"
-              placeholder="Title"
+              placeholder="Cost"
               //value={newProposal.description}
               onChange={((handleValueChange))}
             />
@@ -152,9 +156,8 @@ const Proposals = () => {
           </form>
       </details>
       <div className="Vote">
-        <h2>Place a Vote</h2>
-        <button>Yes</button>
-        <button>No</button>
+        <h2>Current DAO Balance</h2>
+        <h3 className='balance'>1580000 STX</h3>
       </div>
     </div>
 
@@ -164,8 +167,9 @@ const Proposals = () => {
           <tr>
             <th>Proposal ID</th>
             <th>Proposal Title</th>
-            <th>Votes</th>
+            <th>Amount</th>
             <th>Status</th>
+            <th>Vote</th>
           </tr>
         </thead>
         <tbody>
@@ -173,14 +177,19 @@ const Proposals = () => {
             <tr key={proposal.id}>
               <td>{proposal.id}</td>
               <td>{proposal.title}</td>
-              <td>{proposal.votes}</td>
+              <td>{proposal.amount}</td>
               <td>{proposal.status}</td>
+              <td>
+                <button>Yes</button>
+                <button>No</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <h2>Ongoing Proposals</h2>
     </div>
+    
     </div>
   );
 };

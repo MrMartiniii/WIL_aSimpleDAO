@@ -224,6 +224,13 @@ h2 {
   outline: 10px black;
 }
 
+h3 {
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00d9ff;
+}
+
 p {
   font-size: 1.2rem;
   line-height: 1.5;
@@ -427,5 +434,9 @@ button:hover {
   height: auto;
   margin: 10px auto;
   display: block;
+}
+
+.class {
+  color: #747bff;
 }
 

@@ -27,86 +27,6 @@ import {useInterval} from 'react-use';
 
 
 function Contents() {
-
-  
-
-  const { openContractCall, isRequestPending } = useOpenContractCall();
-  const { stxAddress } = MicroStacks.useAccount();
-  const [response, setResponse] = useState(null);
-  const { openAuthRequest, signOut, isSignedIn } = useAuth();
-  const [post, setPost] = useState('');
-  const [postedMessage, setPostedMessage] = useState("none");
-  const [postVal, setPostVal] = useState('');
-  const [postedValue, setPostedValue] =useState("none");
-  const [contractAddress, setContractAddress] = useState("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM")
-
-  const handleMessageChange = (e: { target: {value: SetStateAction<string>; }; }) => {
-    setPost(e.target.value);
-  }
-  const handleValueChange = (e: {target: {value: SetStateAction<string>; }; }) => {
-    setPostVal(e.target.value);
-  }
-
-  const handleOpenContractCall = async () => {
-    const functionArgs = [
-      stringUtf8CV(post),
-      intCV(postVal),
-    ];
-
-    const postConditions = [
-      makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
-    ];
-
-    await openContractCall({
-      contractAddress: contractAddress,
-      contractName: 'CreatePolicy',
-      functionName: 'create-policy',
-      functionArgs,
-      postConditions,
-      attachment: 'this is an attachment',
-      onFinish: async data => {
-        console.log('finished contract call', data);
-        setResponse(data);
-      },
-      onCancel: () => {
-        console.log('popup closed')
-      },
-    });
-  };
-
-  const getPost = useCallback(async () => {
-
-    if  (isSignedIn) {
-      const functionArgs = [
-        standardPrincipalCV(`${stxAddress}`)
-      ]
-
-      const network = new StacksMocknet();
-      const result = await callReadOnlyFunction({
-        contractAddress: contractAddress,
-        contractName: 'CreatePolicy',
-        functionName: 'getPolicies',
-        functionArgs,
-        network
-      });
-
-
-      console.log("getting result", result);
-      if (result.value) {
-        //console.log(result.value.data)
-        setPostedMessage(result.value.data)
-      }
-    }
-  }, []);
-
-  useEffect( () => {
-    console.log('In UseEffect')
-    getPost()
-  }, [isSignedIn])
-
-  useInterval(getPost, 10000);
-
-
   return (
     <>
     <div className="container">
@@ -115,25 +35,6 @@ function Contents() {
       <UserCard />
       </header>
     </div>
-    <form action="" id="policyInput" onSubmit={ () => handleOpenContractCall()}>
-            <input
-              id='description'
-              type="text"
-              placeholder="Description"
-              //value={newProposal.title}
-              onChange={(handleMessageChange)}
-            />
-            <input
-              id='value'
-              type="text"
-              placeholder="Title"
-              //value={newProposal.description}
-              onChange={((handleValueChange))}
-            />
-            <input type="submit" />
-          </form>
-
-          <p>{postedMessage}</p>
     <div className="container">
       <p>At WeGym, we're not just a gym — we're a community where you have the power to shape the gym's future. Using cutting-edge blockchain technology, we've created a system that lets members directly manage and make decisions through our unique DAO (Decentralized Autonomous Organization). This means that every vote you cast on gym-related matters, whether it's new equipment, classes, or other improvements, is secure, transparent, and tamper-proof. No one can alter or manipulate the results, ensuring that every voice is heard fairly and openly.</p>
       <h2>What Is WeGym?</h2>
