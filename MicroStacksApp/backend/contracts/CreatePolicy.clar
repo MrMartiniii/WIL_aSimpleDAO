@@ -29,8 +29,8 @@
 
 ;; data maps
 ;;
-(define-map policies principal {maker: principal, message: (string-utf8 500), amount: uint})
-(define-map votes {policy: principal, recipient: principal} {decision: bool})
+(define-map policies principal {message: (string-utf8 500), amount: uint})
+(define-map votes {member: principal, recipient: principal} {decision: bool})
 
 ;; public functions
 ;;
@@ -51,17 +51,17 @@
   (begin
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
-    (map-set policies tx-sender {maker: tx-sender, message: message, amount: (to-uint amount)})
+    (map-set policies tx-sender {message: message, amount: (to-uint amount)})
     (print (map-get? policies tx-sender))
     (var-set total-policies (+ (var-get total-policies) u1))
     (ok "SUCCESS")
   )
 )
 
+
 (define-public (vote (recipient principal) (decision bool))
     (begin
         (asserts! (is-some (index-of (var-get members) contract-caller)) err-not-a-member)
-        (asserts! (is-some (get maker (map-get? policies recipient { maker: recipient }))) (err err-no-policy))
         ;; #[allow(unchecked_data)]
         (ok (map-set votes {member: tx-sender, recipient: recipient} {decision: decision}))
     )
@@ -87,6 +87,7 @@
     )
 )
 
+
 ;;Deposit to contract
 (define-public (deposit (amount uint))
     (stx-transfer? amount tx-sender (as-contract tx-sender))
@@ -99,7 +100,7 @@
     (default-to false (get decision (map-get? votes {member: member, recipient: recipient})))
 )
 
-(define-read-only (tally-votes) 
+(define-read-only (tally-votes)
     (fold tally (var-get members) u0)
 )
 
@@ -107,23 +108,24 @@
 
 (define-read-only (getPolicies)
         (ok (append (list) (get-all-policies (var-get members))))
-  
 )
 
 (define-read-only (get-all-policies (ids (list 100 principal)))
     (map get-one-policy ids)
 )
-;; private functions
-;;
 
-(define-private (tally (member principal) (accumulator uint)) 
-    (if (get-vote member tx-sender) (+ accumulator u1) accumulator)
-)
+;; private functions
 
 (define-private (get-one-policy (principal principal)) 
     (map-get? policies principal)
 )
 
+
 (define-private (get-amount)
  (map-get? policies tx-sender)
 )
+
+(define-private (tally (member principal) (accumulator uint)) 
+    (if (get-vote member tx-sender) (+ accumulator u1) accumulator)
+)
+

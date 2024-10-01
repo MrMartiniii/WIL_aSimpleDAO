@@ -27,6 +27,46 @@ import {useInterval} from 'react-use';
 
 
 function Contents() {
+
+  const { openContractCall, isRequestPending } = useOpenContractCall();
+  const { stxAddress } = MicroStacks.useAccount();
+  const [response, setResponse] = useState(null);
+  const { openAuthRequest, signOut, isSignedIn } = useAuth();
+  const [post, setPost] = useState('');
+  const [postedMessage, setPostedMessage] = useState("none");
+  const [postVal, setPostVal] = useState('');
+  const [postedValue, setPostedValue] =useState("none");
+  const [contractAddress, setContractAddress] = useState("ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM")
+
+  const handleOpenContractCall = async () => {
+    const functionArgs = [
+      standardPrincipalCV(`${stxAddress}`)
+    ];
+
+    const postConditions = [
+      makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
+    ];
+
+    await openContractCall({
+      contractAddress: contractAddress,
+      contractName: 'CreatePolicy',
+      functionName: 'start',
+      functionArgs,
+      postConditions,
+      attachment: 'this is an attachment',
+      onFinish: async data => {
+        console.log('finished contract call', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed')
+      },
+    });
+  };
+
+
+
+
   return (
     <>
     <div className="container">
@@ -45,7 +85,7 @@ function Contents() {
     </div>
     <div className="container">
       <p>Simple! You want new equipment, classes, or gym features? Write a proposal, everyone in the community has an opportunity to vote on it, and if the majority of the community like your idea, it'll pass. If you linked a product, it will be automatically purchased with the WEGYM members fund. Once it rocks up, our team at the gym will set it up and you can begin enjoying YOUR new addition to OUR gym!</p>
-      <h2>How Does it Work tho, Actually?</h2>
+      <h2>How Does it Work?</h2>
     </div>
     <div className="container">
       <h2>Why Bother with Blockchain?</h2>

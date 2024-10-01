@@ -4,7 +4,7 @@ import { FungibleConditionCode, makeStandardSTXPostCondition, callReadOnlyFuncti
 import { StacksMocknet } from 'micro-stacks/network';
 import '../App.css';
 import { useOpenContractCall } from '@micro-stacks/react';
-import { intCV, standardPrincipalCV, stringUtf8CV } from 'micro-stacks/clarity';
+import { intCV, standardPrincipalCV, stringUtf8CV, cvToTrueValue } from 'micro-stacks/clarity';
 import {useInterval} from 'react-use';
 
 import * as MicroStacks from '@micro-stacks/react';
@@ -98,23 +98,23 @@ const Proposals = () => {
   const getPost = useCallback(async () => {
 
     if  (isSignedIn) {
-      const functionArgs = [
-        standardPrincipalCV(`${stxAddress}`)
-      ]
+      const args = [
+        //standardPrincipalCV(`${stxAddress}`)
+      ]!
 
       const network = new StacksMocknet();
       const result = await callReadOnlyFunction({
         contractAddress: contractAddress,
         contractName: 'CreatePolicy',
         functionName: 'getPolicies',
-        functionArgs,
+        functionArgs: args,
         network
       });
 
 
-      console.log("getting result", result);
+      console.log("getting result");
       if (result.value) {
-        //console.log(result.value.data)
+        console.log(result);
         setPostedMessage(result.value.data)
       }
     }
@@ -188,6 +188,8 @@ const Proposals = () => {
         </tbody>
       </table>
       <h2>Ongoing Proposals</h2>
+
+      <p>{postedMessage}</p>
     </div>
     
     </div>
