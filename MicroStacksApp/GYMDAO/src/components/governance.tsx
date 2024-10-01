@@ -33,10 +33,9 @@ const Governance = () => {
           The Stacks Governance Process is a community-driven initiative that enables the community to propose, discuss, and vote on changes to the Stacks network. The process involves:
         </p>
         <ol>
-          <li>Proposal submission: Community members can submit proposals for changes to the Stacks network.</li>
-          <li>Discussion: The community discusses the proposal on the Governance Forum.</li>
-          <li>Voting: The community votes on the proposal using a decentralized voting system.</li>
-          <li>Implementation: If the proposal is approved, it is implemented by the Stacks development team.</li>
+          <li>Proposal submission: Gym members can submit proposals for changes to the WeGym DAO.</li>
+          <li>Voting: The community votes on the proposal on the Proposals page</li>
+          <li>Implementation: If the proposal is succcessful, it is implemented by the WeGym smart contract.</li>
         </ol>
       </div>
     </div>
