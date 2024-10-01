@@ -17,7 +17,7 @@ const AboutUs = () => {
         <h2>Our Technology</h2>
       </div>
       <div className="container">
-      <h2>Meet the Team</h2>
+      <h2>Our Team</h2>
         <ul>
           <li>
             <h3>Thomas Lincoln</h3>
