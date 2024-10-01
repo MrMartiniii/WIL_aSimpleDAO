@@ -116,7 +116,7 @@
 
 ;; private functions
 
-(define-private (get-one-policy (principal principal)) 
+(define-read-only (get-one-policy (principal principal)) 
     (map-get? policies principal)
 )
 
@@ -127,5 +127,9 @@
 
 (define-private (tally (member principal) (accumulator uint)) 
     (if (get-vote member tx-sender) (+ accumulator u1) accumulator)
+)
+
+(define-read-only (dao-balance) 
+    (stx-get-balance (as-contract tx-sender))
 )
 

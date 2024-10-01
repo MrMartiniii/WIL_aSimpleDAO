@@ -11,7 +11,7 @@ plan:
         - contract-publish:
             contract-name: CreatePolicy
             expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            cost: 37660
+            cost: 38470
             path: "contracts\\CreatePolicy.clar"
             anchor-block-only: true
             clarity-version: 2
