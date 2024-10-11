@@ -1,28 +1,32 @@
 # GYMDAO - A Simple DAO
 
-GymDao is a Decentralised Autonomous Organisation in which members can create principals for other members to vote upon. The principles which recieve a majority YES vote will be passed, and GymDao tokens will be transfered from a multi-sig wallet to the principal owner to enact the principal. The principals will effect how a gym is run, with tokens being used to buy equipment, supplies, and enforce policies.
+GYMDAO is a decentralized autonomous organization (DAO) designed to empower gym members by allowing them to participate in the management and operation of their gym. Utilizing blockchain technology, this proof-of-concept demonstrates how DAOs can improve transparency, engagement, and efficiency in real-world businesses.
 
 ### Clarity
 GymDao uses clarity smart contracts to create, vote on, and transfer tokens between members and a multi-signature wallet.
 
+### Features
+Member Proposals: Members can submit proposals for gym improvements, equipment purchases, or operational changes.
+Voting System: Members can vote on proposals using Stacks (STX) tokens, ensuring a democratic decision-making process.
+Transparent Management: All proposals and voting outcomes are recorded on the blockchain, providing an immutable audit trail.
+
+### Technology Stack
+Blockchain: Built on Stacks to enable smart contracts on Bitcoin.
+Front-end Framework: React for a dynamic user interface.
+Database: Using local storage for proposal and voting data.
+
 ## How to use
-To join GymDao, open //link here// and connect your stacks wallet. Once your wallet is connected, click the *Join Now* button.  
-GymDao's token pool is provided by weekly subscription fees of $10, which is worth 1GymDao token.  
+To try GymDao, clone this project's directory
+git clone (https://github.com/MrMartiniii/WIL_aSimpleDAO.git)
 
-## How to vote
-Once you are a member of GymDao, you can access all the current proposed principals. Upon selecting a principal, you can choose to vote yes or no. To submit a vote, you are required to spend 1 GymDao token.  
+Install Docker and enable WSL on your device
 
-A principal can only by voted on by each member once to ensure a fair outcome.
+Download and setup a DevNet  
 
-## Creating a principal
-A member can create a principal by clicking the *Create Principal* button. This will bring up a modal in which the member can write a description of the principal, and how many tokens will be needed to fund it.  
-Once the member has input these, the principal can deployed using the *Done* button, so that other members can vote on it.
+Install Leather Wallet or a similar Wallet
+Change to your local DevNet 
 
-To create a principal to be voted on, GymDao members are required to spend 1 GymDao Token.
+Run GymDAO
 
-## Change Log
-
-
-23/7/24 Began work on modal 
-30/7/24 Fixed modal functionality 
-
+## Creating a proposal
+A member can create a proposal by clicking the *Create Proposal* button. You can input the proposal and the amount it would cost, and tehn submit the proposal. On submitting the proposal, your wallet of choice will popup so you can pay for the proposal using your unlimited DevNet funds. 
