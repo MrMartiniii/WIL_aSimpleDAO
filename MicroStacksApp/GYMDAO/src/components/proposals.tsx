@@ -4,7 +4,7 @@ import { FungibleConditionCode, makeStandardSTXPostCondition, callReadOnlyFuncti
 import { StacksMocknet } from 'micro-stacks/network';
 import '../App.css';
 import { useOpenContractCall } from '@micro-stacks/react';
-import { uintCV, intCV, standardPrincipalCV, stringUtf8CV, cvToTrueValue } from 'micro-stacks/clarity';
+import { boolCV, uintCV, intCV, standardPrincipalCV, stringUtf8CV, cvToTrueValue } from 'micro-stacks/clarity';
 import {useInterval} from 'react-use';
 import refreshIcon from '../assets/Refresh.png';
 
@@ -50,6 +50,7 @@ const Proposals = () => {
       setProposals((prevProposals) => [...prevProposals, newProposal]); // Spread existing proposals and add the new one
       setPostedMessage('');
         setPostedValue('');
+        handleVote();
     }
     
   };
@@ -87,7 +88,7 @@ const Proposals = () => {
   //Add money to DAO
   const fundDao = async () => {
     const functionArgs = [
-      uintCV(20)
+      uintCV(1000000)
     ];
 
     const postConditions = [
@@ -161,6 +162,55 @@ const Proposals = () => {
   }, []);
 
 
+  //Voting
+  const handleVote = async () => {
+    const functionArgs = [
+      standardPrincipalCV(`${stxAddress}`),
+      boolCV(true)
+    ]!
+
+    const postConditions = [
+      makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
+    ];
+
+    await openContractCall({
+      contractAddress: contractAddress,
+      contractName: 'CreatePolicy',
+      functionName: 'vote',
+      functionArgs,
+      postConditions,
+      attachment: 'this is an attachment',
+      onFinish: async data => {
+        console.log('finished contract call', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed')
+      },
+    });
+  };
+
+  const getVote = useCallback(async () => {
+    if  (isSignedIn) {
+      const args = [standardPrincipalCV(`${stxAddress}`),standardPrincipalCV(`${stxAddress}`)]!
+
+      const network = new StacksMocknet();
+      const result = await callReadOnlyFunction({
+        contractAddress: contractAddress,
+        contractName: 'CreatePolicy',
+        functionName: 'get-vote',
+        functionArgs: args,
+        network
+      });
+
+
+      console.log("getting result", result);
+      if (result.value) {
+        console.log(result.value.toString());
+      }
+    }
+  }, []);
+
   useEffect( () => {
     console.log('In UseEffect')
     if (!showProp) {
@@ -172,8 +222,36 @@ const Proposals = () => {
 
 
     useInterval(getBalance, 10000);  
+    useInterval(getVote, 10000);
+
+
+    //withdraw Money
+    const withdrawStx = async () => {
+      const functionArgs = []!
   
+      const postConditions = [
+        makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '1000000'),
+      ];
   
+      await openContractCall({
+        contractAddress: contractAddress,
+        contractName: 'CreatePolicy',
+        functionName: 'withdraw',
+        functionArgs,
+        postConditions,
+        attachment: 'this is an attachment',
+        onFinish: async data => {
+          console.log('finished contract call', data);
+          setResponse(data);
+        },
+        onCancel: () => {
+          console.log('popup closed')
+        },
+      });
+    };
+
+
+
 
 
   return (
@@ -209,8 +287,8 @@ const Proposals = () => {
       </details>
       <div className="Vote">
         <h2>Current DAO Balance</h2>
-        <h3 className='balance'>{stxBalance} STX</h3>
-        <button onClick={fundDao}>Add to DAO fund</button>
+        <h3 className='balance'>{stxBalance} µSTX</h3>
+        <button onClick={fundDao}>Pay Weekly Fee</button>
       </div>
     </div>
     <div>
@@ -274,7 +352,7 @@ const Proposals = () => {
         </tbody>
       </table>
     </div>
-    
+    <button onClick={withdrawStx}>WithDraw</button>
     </div>
   );
 };

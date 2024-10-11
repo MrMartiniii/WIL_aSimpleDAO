@@ -1,30 +1,21 @@
+import { Clarinet, Tx, Chain, Account, types } from "clarinet";
+import { assert } from "chai";
 
-import { describe, expect, it } from "vitest";
-import { Cl } from "@stacks/transactions";
+describe('Smart Contract Tests', () => {
+  it('should only allow the owner to start the contract', () => {
+    let chain = new Chain();
+    let deployer = chain.accounts.get("deployer");
+    let notOwner = chain.accounts.get("wallet_1");
 
-const accounts = simnet.getAccounts();
-const wallet = accounts.get("wallet_1")!;
+    let block = chain.mineBlock([
+      Tx.contractCall(
+        "your-contract-name", // Replace with your contract's name
+        "start",              // Replace with the name of the function you're testing
+        [types.list([types.principal(deployer.address)]), types.uint(1)],
+        notOwner.address      // Call from a non-owner account to test failure
+      )
+    ]);
 
-/*
-  The test below is an example. To learn more, read the testing documentation here:
-  https://docs.hiro.so/clarinet/feature-guides/test-contract-with-clarinet-sdk
-*/
-
-describe("example tests", () => {
-  it("ensures simnet is well initalised", () => {
-    expect(simnet.blockHeight).toBeDefined();
-  });
-
-  // it("shows an example", () => {
-  //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
-  //   expect(result).toBeUint(0);
-  // });
-
-  it("")
-});
-
-describe("Create a proposal", () => {
-  it("creates a proposal with a message", () => {
-    const proposal = simnet.callPublicFn('CreatePolicy', 'create-policy')
+    block.receipts[0].result.expectErr().expectUint(100); // Expecting an error with code 100
   });
 });

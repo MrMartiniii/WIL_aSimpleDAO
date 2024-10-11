@@ -20,6 +20,7 @@
 (define-constant err-no-policy (err 108))
 
 
+
 ;; data vars
 ;;
 (define-data-var total-policies uint u0)
@@ -49,6 +50,8 @@
 
 (define-public (create-policy (message (string-utf8 500)) (amount int))
   (begin
+    ;; Check if tx-sender has enough balance to cover the price
+    (asserts! (>= (stx-get-balance tx-sender) price) (err u106))
     (try! (stx-transfer? price tx-sender contract-owner))
     ;; #[allow(unchecked_data)]
     (map-set policies tx-sender {message: message, amount: (to-uint amount)})
@@ -74,18 +77,26 @@
             (recipient tx-sender)
             (total-votes (tally-votes))
             (policy (map-get? policies recipient))
-            (amount (unwrap! (get amount policy) (err u105))) ;;get the amount of tokens from the policy
         )
-        (begin ;; using begin to order the code
-            (print amount)
-            (asserts! (>= total-votes (var-get votes-required)) err-votes-required-not-met)
-            (asserts! (>= (stx-get-balance (as-contract tx-sender)) amount) (err u106)) ;; use this to check there is enough funds in the pool 
-            (try! (as-contract (stx-transfer? amount tx-sender recipient))) ;; transfer the specific amount 
-            (map-delete policies tx-sender)
-            (ok total-votes)
+        (if (is-none policy)  ;; Check if the policy is none
+            (err u108)  ;; Return error if no policy exists
+            (let
+                (
+                    (amount (unwrap! (get amount policy) (err u105))) ;; Get the amount of tokens from the policy
+                )
+                (begin ;; Using begin to order the code
+                    (print amount)
+                    (asserts! (>= total-votes (var-get votes-required)) err-votes-required-not-met)
+                    (asserts! (>= (stx-get-balance (as-contract tx-sender)) amount) (err u106)) ;; Check that there are enough funds in the pool 
+                    (try! (as-contract (stx-transfer? amount tx-sender recipient))) ;; Transfer the specific amount 
+                    (map-delete policies tx-sender)
+                    (ok total-votes)
+                )
+            )
         )
     )
 )
+
 
 
 ;;Deposit to contract
